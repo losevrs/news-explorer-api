@@ -1,0 +1,35 @@
+{
+  "name": "news-explorer-api",
+  "author": "losevrs <losevrs@yandex.ru>",
+  "description": "Диплом Яндекс.Практикум Node.js и Express",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "envdeploy": "scp -r .env rodion@178.154.231.76:/home/rodion/news-explorer-api",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "celebrate": "^13.0.4",
+    "dotenv": "^8.2.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "winston": "^3.3.3",
+    "express-winston": "^4.0.5",
+    "validator": "^13.1.17",
+    "mongoose": "^5.10.11"
+  },
+  "devDependencies": {
+    "cookie-parser": "^1.4.5",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.4"
+  }
+}
