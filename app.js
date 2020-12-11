@@ -1,6 +1,13 @@
+const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({ // 150 запросов в 10 минут
+  windowMs: 10 * 60 * 1000,
+  max: 150,
+});
 
 const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
@@ -17,6 +24,8 @@ const { sendError } = require('./validation/errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+app.use(helmet());
+app.use(limiter);
 app.use(cors());
 
 app.use(bodyParser.json());
