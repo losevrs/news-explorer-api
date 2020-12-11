@@ -54,6 +54,7 @@ function sendError(error, res) {
         errorCode = CONFLICT_ERROR.code;
         errorMessage = CONFLICT_ERROR.message;
       }
+      errorMessage += ` ( ${error.message} )`;
       break;
     case 'NotAutorisation':
       errorCode = NOT_AUTORISATION.code;
@@ -62,7 +63,7 @@ function sendError(error, res) {
     case 'CastError':
     case 'ValidationError':
       errorCode = INCORRECT_DATA_ERROR.code;
-      errorMessage = INCORRECT_DATA_ERROR.message;
+      errorMessage = `${INCORRECT_DATA_ERROR.message} ( ${error.message} )`;
       break;
     case 'ObjectNotFound':
       errorCode = NOT_FOUND_ERROR.code;
