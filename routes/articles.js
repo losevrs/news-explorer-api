@@ -26,7 +26,6 @@ articlesRouter.post('/', celebrate({
     source: Joi.string().required(),
     link: Joi.string().required().regex(urlRegExp),
     image: Joi.string().required().regex(urlRegExp),
-    owner: Joi.string().required().length(24).hex(),
   }).unknown(true),
 }), createArticle);
 
