@@ -6,14 +6,8 @@ const { secret } = require('../utils/values');
 const User = require('../models/user');
 
 const { ObjectNotFoundError } = require('../validation/NotFoundError');
-const { NotAutorisationError } = require('../validation/NotAutorisationError');
 
 const getUser = (req, res, next) => {
-  if (!req.user) {
-    next(new NotAutorisationError());
-    return;
-  }
-
   const id = req.user._id;
 
   User.findById(id)
