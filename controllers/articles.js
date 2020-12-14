@@ -1,5 +1,6 @@
 const Article = require('../models/article');
-const { ObjectForError } = require('../validation/errors');
+const { ForbiddenError } = require('../validation/ForbiddenError');
+const { ObjectNotFoundError } = require('../validation/NotFoundError');
 
 const createArticle = (req, res, next) => {
   const owner = req.user._id;
@@ -31,14 +32,14 @@ const deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
 
   Article.findById(articleId).select('+owner')
-    .orFail(new ObjectForError('ObjectNotFound'))
+    .orFail(new ObjectNotFoundError())
     .then((article) => {
       if (article.owner.toString() !== req.user._id.toString()) {
-        next(new ObjectForError('Forbidden'));
+        next(new ForbiddenError());
         return;
       }
       Article.findByIdAndRemove(articleId)
-        .orFail(new ObjectForError('ObjectNotFound'))
+        .orFail(new ObjectNotFoundError())
         .then((articleData) => res.json(articleData))
         .catch(next);
     })
@@ -46,7 +47,8 @@ const deleteArticle = (req, res, next) => {
 };
 
 const getArticles = (req, res, next) => {
-  Article.find({})
+  const owner = req.user._id;
+  Article.find({ owner })
     .then((articles) => res.json(articles))
     .catch(next);
 };

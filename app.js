@@ -2,27 +2,18 @@ const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const rateLimit = require('express-rate-limit');
-
-const limiter = rateLimit({ // 150 запросов в 10 минут
-  windowMs: 10 * 60 * 1000,
-  max: 150,
-});
 
 const cors = require('cors');
-const { celebrate, Joi, errors } = require('celebrate');
+const { errors } = require('celebrate');
 
 const { srvLog, errorLog } = require('./middlewares/logger');
-const auth = require('./middlewares/auth');
+const { errorHandler } = require('./middlewares/errorhandler');
 
-require('dotenv').config();
+const { limiter } = require('./utils/ratelimiter');
 
+const { PORT, db } = require('./utils/values');
 const router = require('./routes/index');
-const { login, createUser } = require('./controllers/users');
 
-const { sendError } = require('./validation/errors');
-
-const { PORT = 3000 } = process.env;
 const app = express();
 app.use(helmet());
 app.use(limiter);
@@ -31,7 +22,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/explorernews', {
+mongoose.connect(db, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -41,32 +32,13 @@ mongoose.connect('mongodb://localhost:27017/explorernews', {
 // Логирование запросов к серверу
 app.use(srvLog);
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().required(),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.use(auth);
-
-app.use(router);
+app.use(router); // Роутинг
 
 // Обработка ошибок
-app.use(errorLog);
-app.use(errors());
-app.use((error, req, res, next) => {
-  sendError(error, res);
-  next();
-});
+
+app.use(errorLog); // Лог ошибок
+app.use(errors()); // Joi
+app.use(errorHandler); // Централизованная обработка
 
 app.listen(PORT, () => {
 });

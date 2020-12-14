@@ -6,9 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "envdeploy": "scp -r .env rodion@178.154.231.76:/home/rodion/news-explorer-api",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "license": "ISC",
@@ -28,7 +26,6 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "cookie-parser": "^1.4.5",
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
