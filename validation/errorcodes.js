@@ -5,7 +5,7 @@ const INCORRECT_DATA_ERROR = {
 
 const LOGIN_FAILED = {
   code: 401,
-  message: 'Не верное имя пользователя или пароль.',
+  message: 'Неверное имя пользователя или пароль.',
 };
 
 const NOT_AUTORISATION = {
