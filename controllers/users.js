@@ -12,7 +12,7 @@ const getUser = (req, res, next) => {
 
   User.findById(id)
     .orFail(new ObjectNotFoundError())
-    .then((user) => res.json({ email: user.email, name: user.name }))
+    .then((user) => res.json({ _id: id, email: user.email, name: user.name }))
     .catch(next);
 };
 
