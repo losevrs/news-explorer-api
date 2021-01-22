@@ -30,12 +30,11 @@ mongoose.connect(db, {
 });
 
 // Логирование запросов к серверу
-app.use(srvLog);
 
+app.use(srvLog);
 app.use(router); // Роутинг
 
 // Обработка ошибок
-
 app.use(errorLog); // Лог ошибок
 app.use(errors()); // Joi
 app.use(errorHandler); // Централизованная обработка
