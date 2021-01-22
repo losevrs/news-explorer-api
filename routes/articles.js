@@ -7,6 +7,7 @@ const {
   createArticle,
   getArticles,
   deleteArticle,
+  getArticleByURL,
 } = require('../controllers/articles');
 
 articlesRouter.get('/', getArticles);
@@ -17,16 +18,27 @@ articlesRouter.delete('/:articleId', celebrate({
   }),
 }), deleteArticle);
 
-articlesRouter.post('/', celebrate({
+articlesRouter.post('/url', celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
-    text: Joi.string().required(),
+    link: Joi.string().required().regex(urlRegExp),
     date: Joi.string().required(),
     source: Joi.string().required(),
-    link: Joi.string().required().regex(urlRegExp),
-    image: Joi.string().required().regex(urlRegExp),
   }).unknown(true),
-}), createArticle);
+}), getArticleByURL);
+
+articlesRouter.post('/',
+  celebrate({
+    body: Joi.object().keys({
+      keyword: Joi.string().required(),
+      title: Joi.string().required(),
+      text: Joi.string().required(),
+      date: Joi.string().required(),
+      source: Joi.string().required(),
+      link: Joi.string().required().regex(urlRegExp),
+      image: Joi.string().required().regex(urlRegExp),
+    }).unknown(true),
+  }), createArticle);
 
 module.exports = articlesRouter;

@@ -53,8 +53,27 @@ const getArticles = (req, res, next) => {
     .catch(next);
 };
 
+const getArticleByURL = (req, res, next) => {
+  const owner = req.user._id;
+  const {
+    keyword,
+    title,
+    link,
+    date,
+    source,
+  } = req.body;
+
+  Article.find({
+    owner, link, keyword, title, date, source,
+  })
+    .orFail(new ObjectNotFoundError())
+    .then((articles) => res.json(articles))
+    .catch(next);
+};
+
 module.exports = {
   createArticle,
   deleteArticle,
   getArticles,
+  getArticleByURL,
 };

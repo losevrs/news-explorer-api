@@ -28,6 +28,7 @@ router.use(auth);
 
 router.use('/users', usersRouter);
 router.use('/articles', articlesRouter);
+
 router.use((req, res, next) => {
   next(new ObjectNotFoundError());
 });
